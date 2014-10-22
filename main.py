@@ -388,16 +388,51 @@ while True:
                     reset_wanted = True
                 elif event.key == K_SPACE:
                     if len(current_block) != 0:
-                        coords = get_coords(current_block)
-                        for i in coords:
-                            board[i[1]][i[0]] = 0
-                        if current_block[1] == 4:
-                            current_block[1] = 1
+                        temp_block = []
+                        for i in current_block:
+                            temp_block.append(i)
+                        if temp_block[1] == 4:
+                            temp_block[1] = 1
                         else:
-                            current_block[1] += 1
+                            temp_block[1] += 1
                         coords = get_coords(current_block)
-                        for i in coords:
-                            board[i[1]][i[0]] = tetrimoes_num_dict[current_block[0]]
+                        temp_coords = get_coords(temp_block)
+                        temp = False
+                        count = 0
+                        for a in temp_coords:
+                            for b in a:
+                                not_on_bottom = True
+                                if b > 14:
+                                    not_on_bottom = False
+                                if b > 9 and count % 2 == 0:
+                                    temp = False
+                                    break
+                                elif b < 0 and count % 2 == 0:
+                                    temp = False
+                                    break
+                                elif b > 14 and count % 2 == 1:
+                                    temp = False
+                                    break
+                                elif b < 14:
+                                    if board[a[1]][a[0]] != 0 and [a[0], a[1]] not in coords:
+                                        temp = False
+                                        break
+                                else:
+                                    temp = True
+                                count += 1
+                            if not temp:
+                                break
+                        if temp:
+                            coords = get_coords(current_block)
+                            for i in coords:
+                                board[i[1]][i[0]] = 0
+                            if current_block[1] == 4:
+                                current_block[1] = 1
+                            else:
+                                current_block[1] += 1
+                            coords = get_coords(current_block)
+                            for i in coords:
+                                board[i[1]][i[0]] = tetrimoes_num_dict[current_block[0]]
                 elif event.key == K_LEFT:
                     if len(current_block) != 0:
                         coords = get_coords(current_block)
@@ -512,8 +547,8 @@ while True:
         screen.blit(myfont.render("down = move down", 1, (0,0,0)), (10, 210))
         screen.blit(myfont.render("r = restart", 1, (0,0,0)), (10, 230))
         screen.blit(myfont.render("Known bugs: ", 1, (0,0,0)), (10, 250))
-        screen.blit(myfont.render("rotate on wall & end leaves ...", 1, (0,0,0)), (10, 270))
-        screen.blit(myfont.render("... screen on right side = crash", 1, (0,0,0)), (10, 290))
+        screen.blit(myfont.render("rotate on bottom & end leaves ...", 1, (0,0,0)), (10, 270))
+        screen.blit(myfont.render("... screen = crash", 1, (0,0,0)), (10, 290))
 
     pygame.display.update()
     clock.tick(30)
