@@ -219,12 +219,12 @@ def draw_blocks():
                           7: colors.magenta,
                           8: colors.yellow}
             if board[a][b]:
-                pygame.draw.rect(screen, color_dict[board[a][b]],
-                                    (b * 25, a * 25, 25, 25))
+                pygame.draw.rect(screen, color_dict[board[a][b]], (b * 25, a * 25, 25, 25))
 
 def check_line():
     global landed, score
     num_lines = 0
+    lines = []
     temp = True
     if len(current_block) != 0:
         for a in range(0, 15):
@@ -237,12 +237,13 @@ def check_line():
             if temp and landed:
                 for b in range(0, 10):
                     board[a][b] = 0
+                lines.append(a)
                 num_lines += 1
     for i in range(0, num_lines):
         score += 1
         for a in range(1, 16):
             for b in range(0, 10):
-                if 15 - a != 14 and board[15 - a][b] != 0 and board[15 - a + 1][b] == 0:
+                if 15 - a != 14 and board[15 - a][b] != 0 and board[15 - a + 1][b] == 0 and 15 - a <= lines[i]:
                     board[15 - a + 1][b] = board[15 - a][b]
                     board[15 - a][b] = 0
     return num_lines
