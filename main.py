@@ -17,21 +17,7 @@ pygame.display.set_caption("Tetris")
 
 myfont = pygame.font.SysFont("monospace", 15)
 
-board = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+board = [[0] * 10 for _ in range(15)]
 
 block_list = []
 
@@ -59,15 +45,16 @@ landed = False
 
 start = False
 
-blackColor = pygame.Color(0, 0, 0)
-orangeColor = pygame.Color(255, 127, 0)
-cyanColor = pygame.Color(0, 255, 255)
-limeColor = pygame.Color(191, 255, 0)
-amberColor = pygame.Color(255, 191, 0)
-yellowColor = pygame.Color(255, 255, 0)
-redColor = pygame.Color(255, 0, 0)
-magentaColor = pygame.Color(255, 0, 255)
-whiteColor = pygame.Color(255, 255, 255)
+class colors:
+    black = pygame.Color(0, 0, 0)
+    orange = pygame.Color(255, 127, 0)
+    cyan = pygame.Color(0, 255, 255)
+    lime = pygame.Color(191, 255, 0)
+    amber = pygame.Color(255, 191, 0)
+    yellow = pygame.Color(255, 255, 0)
+    red = pygame.Color(255, 0, 0)
+    magenta = pygame.Color(255, 0, 255)
+    white = pygame.Color(255, 255, 255)
 
 def get_coords(block):
     coords = []
@@ -223,22 +210,17 @@ def get_coords(block):
 def draw_blocks():
     for a in range(0, 15):
         for b in range(0, 10):
-            if board[a][b] == 1:
-                pygame.draw.rect(screen, blackColor, (b * 25, a * 25, 25, 25))
-            elif board[a][b] == 2:
-                pygame.draw.rect(screen, redColor, (b * 25, a * 25, 25, 25))
-            elif board[a][b] == 3:
-                pygame.draw.rect(screen, cyanColor, (b * 25, a * 25, 25, 25))
-            elif board[a][b] == 4:
-                pygame.draw.rect(screen, orangeColor, (b * 25, a * 25, 25, 25))
-            elif board[a][b] == 5:
-                pygame.draw.rect(screen, limeColor, (b * 25, a * 25, 25, 25))
-            elif board[a][b] == 6:
-                pygame.draw.rect(screen, amberColor, (b * 25, a * 25, 25, 25))
-            elif board[a][b] == 7:
-                pygame.draw.rect(screen, magentaColor, (b * 25, a * 25, 25, 25))
-            elif board[a][b] == 8:
-                pygame.draw.rect(screen, yellowColor, (b * 25, a * 25, 25, 25))
+            color_dict = {1: colors.black,
+                          2: colors.red,
+                          3: colors.cyan,
+                          4: colors.orange,
+                          5: colors.lime,
+                          6: colors.amber,
+                          7: colors.magenta,
+                          8: colors.yellow}
+            if board[a][b]:
+                pygame.draw.rect(screen, color_dict[board[a][b]],
+                                    (b * 25, a * 25, 25, 25))
 
 def check_line():
     global landed, score
@@ -350,7 +332,7 @@ def reset():
     start = False
 
 while True:
-    screen.fill(whiteColor)
+    screen.fill(colors.white)
 
     if start:
         reset_wanted = False
@@ -541,11 +523,12 @@ while True:
                     start = True
                     block_list = gen_game_list(200)
 
-        screen.blit(myfont.render("space = play or rotate", 1, (0,0,0)), (10, 150))
-        screen.blit(myfont.render("left = move left", 1, (0,0,0)), (10, 170))
-        screen.blit(myfont.render("right = move right", 1, (0,0,0)), (10, 190))
-        screen.blit(myfont.render("down = move down", 1, (0,0,0)), (10, 210))
-        screen.blit(myfont.render("r = restart", 1, (0,0,0)), (10, 230))
+        lines = ["space = play or rotate",
+                 "left = move left",
+                 "right = move right",
+                 "r = restart"]
+        for line, y_value in zip(lines, range(150, 291, 20)):
+            screen.blit(myfont.render(line, 1, (0, 0, 0)), (10, y_value))
 
     pygame.display.update()
     clock.tick(30)
