@@ -413,7 +413,7 @@ while True:
                                 elif b > 14 and count % 2 == 1:
                                     temp = False
                                     break
-                                elif b < 14:
+                                elif b < 14 and count % 2 == 1:
                                     if board[a[1]][a[0]] != 0 and [a[0], a[1]] not in coords:
                                         temp = False
                                         break
@@ -546,9 +546,6 @@ while True:
         screen.blit(myfont.render("right = move right", 1, (0,0,0)), (10, 190))
         screen.blit(myfont.render("down = move down", 1, (0,0,0)), (10, 210))
         screen.blit(myfont.render("r = restart", 1, (0,0,0)), (10, 230))
-        screen.blit(myfont.render("Known bugs: ", 1, (0,0,0)), (10, 250))
-        screen.blit(myfont.render("rotate on bottom & end leaves ...", 1, (0,0,0)), (10, 270))
-        screen.blit(myfont.render("... screen = crash", 1, (0,0,0)), (10, 290))
 
     pygame.display.update()
     clock.tick(30)
