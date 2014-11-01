@@ -10,7 +10,7 @@ Tetris
 ###Usage:
 Run main.py in any way your OS allows.
 
-###Todo:
+###Wishlist:
 * [X] Remove bugs
 * [X] Add color
 * [X] Add game board barriers
