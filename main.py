@@ -208,6 +208,7 @@ def get_coords(block):
     return coords
 
 def draw_blocks():
+    pygame.draw.line(screen, colors.black, (250, 0), (250, 375))
     for a in range(0, 15):
         for b in range(0, 10):
             color_dict = {1: colors.black,
@@ -347,25 +348,25 @@ while True:
                 sys.exit()
             elif event.type == KEYDOWN:
                 if event.key == K_a:
-                    current_block = ['L', 1, 5, 2, False, 0]
+                    current_block = ['L', 1, 5, 0, False, 0]
                     landed = False
                 elif event.key == K_s:
-                    current_block = ['J', 1, 5, 2, False, 0]
+                    current_block = ['J', 1, 5, 0, False, 0]
                     landed = False
                 elif event.key == K_d:
-                    current_block = ['I', 1, 5, 2, False, 0]
+                    current_block = ['I', 1, 5, 0, False, 0]
                     landed = False
                 elif event.key == K_f:
-                    current_block = ['T', 1, 5, 2, False, 0]
+                    current_block = ['T', 1, 5, 0, False, 0]
                     landed = False
                 elif event.key == K_g:
-                    current_block = ['F_Z', 1, 5, 2, False, 0]
+                    current_block = ['F_Z', 1, 5, 0, False, 0]
                     landed = False
                 elif event.key == K_h:
-                    current_block = ['B_Z', 1, 5, 2, False, 0]
+                    current_block = ['B_Z', 1, 5, 0, False, 0]
                     landed = False
                 elif event.key == K_j:
-                    current_block = ['O', 1, 5, 2, False, 0]
+                    current_block = ['O', 1, 5, 0, False, 0]
                     landed = False
                 elif event.key == K_r:
                     reset_wanted = True
