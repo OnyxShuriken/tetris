@@ -299,35 +299,13 @@ def gen_game_list(number_of_tetrimos):
 
 def reset():
     global board, block_list, current_block, score, print_asci_dict, landed, start
-    board = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+    board = [[0] * 10 for _ in range(15)]
 
     block_list = []
 
     current_block = []
 
     score = 0
-
-    print_asci_dict = {'L':['I', 'I', 'I__'],
-                       'J':['  I', '  I', '__I'],
-                       'I':['I', 'I', 'I', 'I'],
-                       'T':['  I', 'I I I'],
-                       'F_Z':['--', ' --'],
-                       'B_Z':[' --', '--'],
-                       'O':[' ___', '[   ]', '[___]']}
 
     landed = False
 
@@ -504,6 +482,9 @@ while True:
             screen.blit(myfont.render(str(i), 1, (0,0,0)), (255, (250 + (15 * temp))))
 
         screen.blit(myfont.render(str(score), 1, (0,0,0)), (255, 100))
+
+        if len(block_list) == 0:
+            block_list = gen_game_list(200)
 
         if len(current_block) == 0 and len(block_list) != 0:
             current_block = [block_list[0], 1, 5, 2, False, 0]
