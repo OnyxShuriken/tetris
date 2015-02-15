@@ -15,4 +15,4 @@ Run main.py in any way your OS allows.
 * [X] Add color
 * [X] Add game board barriers
 * [ ] Use the scoring mechanics of real Tetris
-* [ ] COMPRESS!
+* [X] COMPRESS!
