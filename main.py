@@ -264,6 +264,8 @@ def update():
                 print("dead2")
                 temp = False
                 break
+            elif board[i[1]][i[0]] == 1:
+                print("dead3")
             else:
                 temp = True
         if temp and current_block[5] % 30 == 0:
@@ -512,6 +514,8 @@ while True:
                  "r = restart"]
         for line, y_value in zip(lines, range(150, 291, 20)):
             screen.blit(myfont.render(line, 1, (0, 0, 0)), (10, y_value))
+            
+        screen.blit(myfont.render("Copyright Cole Gosney 2014", 1, (0,0,0)), (100, 350))
 
     pygame.display.update()
     clock.tick(30)
