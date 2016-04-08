@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 __author__ = 'Cole'
 
-#Copyright Cole Gosney 2014
-#Tetrus (not tetris, obv)
+# Copyright Cole Gosney 2014
+# Tetrus (not tetris, obv)
 
 import pygame
 import sys
@@ -45,6 +45,8 @@ landed = False
 
 start = False
 
+loss = False
+
 class colors:
     black = pygame.Color(0, 0, 0)
     orange = pygame.Color(255, 127, 0)
@@ -55,6 +57,16 @@ class colors:
     red = pygame.Color(255, 0, 0)
     magenta = pygame.Color(255, 0, 255)
     white = pygame.Color(255, 255, 255)
+
+
+color_dict = {1: colors.black,
+              2: colors.red,
+              3: colors.cyan,
+              4: colors.orange,
+              5: colors.lime,
+              6: colors.amber,
+              7: colors.magenta,
+              8: colors.yellow}
 
 def get_coords(block):
     coords = []
@@ -207,20 +219,14 @@ def get_coords(block):
             coords.append([block[2], block[3] + 1])
     return coords
 
+
 def draw_blocks():
     pygame.draw.line(screen, colors.black, (250, 0), (250, 375))
     for a in range(0, 15):
         for b in range(0, 10):
-            color_dict = {1: colors.black,
-                          2: colors.red,
-                          3: colors.cyan,
-                          4: colors.orange,
-                          5: colors.lime,
-                          6: colors.amber,
-                          7: colors.magenta,
-                          8: colors.yellow}
             if board[a][b]:
                 pygame.draw.rect(screen, color_dict[board[a][b]], (b * 25, a * 25, 25, 25))
+
 
 def check_line():
     global landed, score
@@ -249,23 +255,20 @@ def check_line():
                     board[15 - a][b] = 0
     return num_lines
 
+
 def update():
-    global landed
+    global landed, loss, start
     temp = False
     print(check_line())
     if len(current_block) != 0 and len(current_block) == 6:
         coords = get_coords(current_block)
         for i in coords:
             if i[1] == 14:
-                print("dead1")
                 temp = False
                 break
             elif board[i[1] + 1][i[0]] != 0 and [i[0], i[1] + 1] not in coords:
-                print("dead2")
                 temp = False
                 break
-            elif board[i[1]][i[0]] == 1:
-                print("dead3")
             else:
                 temp = True
         if temp and current_block[5] % 30 == 0:
@@ -276,13 +279,12 @@ def update():
             for i in new_coords:
                 board[i[1]][i[0]] = tetrimoes_num_dict[current_block[0]]
         elif not temp:
+            if [5, 2] in coords or [5, 3] in coords:
+                start = False
+                loss = True
             if current_block[4] and current_block[5] % 10 == 0:
-                current_block.remove(current_block[0])
-                current_block.remove(current_block[0])
-                current_block.remove(current_block[0])
-                current_block.remove(current_block[0])
-                current_block.remove(current_block[0])
-                current_block.remove(current_block[0])
+                for each in range(0, 6):
+                    current_block.remove(current_block[0])
                 landed = True
             elif not current_block[4]:
                 current_block[4] = True
@@ -300,7 +302,7 @@ def gen_game_list(number_of_tetrimos):
     return tetrimos_list
 
 def reset():
-    global board, block_list, current_block, score, print_asci_dict, landed, start
+    global board, block_list, current_block, score, print_asci_dict, landed, start, loss
     board = [[0] * 10 for _ in range(15)]
 
     block_list = []
@@ -312,6 +314,8 @@ def reset():
     landed = False
 
     start = False
+
+    loss = False
 
 while True:
     screen.fill(colors.white)
@@ -498,6 +502,12 @@ while True:
 
         if reset_wanted:
             reset()
+    elif loss:
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+        screen.blit(myfont.render("You lost with a score of {0}".format(score), 1, (0,0,0)), (10, 150))
     else:
         for event in pygame.event.get():
             if event.type == QUIT:
