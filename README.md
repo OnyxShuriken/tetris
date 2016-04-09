@@ -8,7 +8,7 @@ Tetris
 * Pygame for 3.x
 
 ###Usage:
-Run main.py in any way your OS allows.
+Run main.py in any GUI-based OS.
 
 ###Wishlist:
 * [X] Remove bugs
